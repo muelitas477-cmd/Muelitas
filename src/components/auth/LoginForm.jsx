@@ -67,7 +67,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, error, loading, onL
 
       <div className="text-center mt-5">
         <p className="small text-muted">
-          ¿Nuevo en Muelitas? <Link to="/registro" className="text-primary fw-bold text-decoration-none ms-1">Crea tu cuenta</Link>
+          ¿Nuevo en NewMe? <Link to="/registro" className="text-primary fw-bold text-decoration-none ms-1">Crea tu cuenta</Link>
         </p>
       </div>
     </div>

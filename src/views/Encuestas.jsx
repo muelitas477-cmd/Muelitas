@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
 import { enviarNotificacionPuntos } from '../services/notificationService';
+import { enviarEmailPuntos } from '../services/emailService';
 
 const Encuestas = () => {
   const [paso, setPaso] = useState(1);
@@ -40,6 +41,11 @@ const Encuestas = () => {
 
         // Notificación al teléfono
         await enviarNotificacionPuntos(100, "Completar encuesta de hábitos");
+        
+        // Enviar correo electrónico
+        if (perfil) {
+          await enviarEmailPuntos(perfil.correo, perfil.nombre, 100, "Completar encuesta de hábitos");
+        }
 
         setCompletado(true);
       }

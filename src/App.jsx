@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Encabezado from "./components/layout/Encabezado";
 import Dashboard from "./views/Dashboard";
@@ -14,6 +15,10 @@ import Pagina404 from "./views/Pagina404";
 import "./App.css";
 
 const App = () => {
+  useEffect(() => {
+    document.title = "NewMe - Salud Bucal";
+  }, []);
+
   return (
     <Router>
       <Encabezado />

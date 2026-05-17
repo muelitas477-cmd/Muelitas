@@ -85,7 +85,7 @@ const Encabezado = () => {
             >
               <Offcanvas.Header closeButton className="border-bottom">
                 <Offcanvas.Title id="offcanvasNavbarLabel" className="fw-bold text-primary">
-                  Menú Muelitas
+                  Menú NewMe
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>

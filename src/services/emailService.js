@@ -19,3 +19,20 @@ export const enviarEmail = async (email, nombre, tipo = 'bienvenida') => {
     return null;
   }
 };
+
+/**
+ * Envía un correo cuando el usuario gana puntos
+ */
+export const enviarEmailPuntos = async (email, nombre, puntos, motivo) => {
+  try {
+    const { data, error } = await supabase.functions.invoke('send-email', {
+      body: { email, nombre, tipo: 'puntos', puntos, motivo },
+    });
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    console.error("Error al enviar email de puntos:", error);
+    return null;
+  }
+};

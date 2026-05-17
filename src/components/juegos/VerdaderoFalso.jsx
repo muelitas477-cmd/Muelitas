@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Alert, Card, ProgressBar } from 'react-bootstrap';
 import { supabase } from '../../database/supabaseconfig';
 import { enviarNotificacionPuntos } from '../../services/notificationService';
+import { enviarEmailPuntos } from '../../services/emailService';
 
 const preguntas = [
   {
@@ -69,6 +70,13 @@ const VerdaderoFalso = ({ alTerminar }) => {
       // Enviar notificación al sistema
       if (puntos > 0) {
         await enviarNotificacionPuntos(puntos, "Completar Mito o Realidad");
+        
+        // Enviar correo electrónico
+        const { data: { user: userAuth } } = await supabase.auth.getUser();
+        const { data: profile } = await supabase.from('profiles').select('nombre, correo').eq('id', userAuth.id).single();
+        if (profile) {
+          await enviarEmailPuntos(profile.correo, profile.nombre, puntos, "Completar Mito o Realidad");
+        }
       }
     }
   };

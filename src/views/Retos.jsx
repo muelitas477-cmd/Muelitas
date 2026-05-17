@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
 import { enviarNotificacionPuntos } from '../services/notificationService';
+import { enviarEmailPuntos } from '../services/emailService';
 
 const Retos = () => {
   const [retos, setRetos] = useState([]);
@@ -37,6 +38,11 @@ const Retos = () => {
       
       // Notificación al teléfono
       await enviarNotificacionPuntos(puntos, "Completar reto de salud");
+      
+      // Enviar correo electrónico
+      if (perfil) {
+        await enviarEmailPuntos(perfil.correo, perfil.nombre, puntos, "Completar reto de salud");
+      }
 
       alert(`¡Felicidades! Has ganado ${puntos} puntos.`);
     }

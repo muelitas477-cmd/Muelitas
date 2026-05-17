@@ -16,7 +16,7 @@ const RegistroForm = ({ formData, setFormData, error, loading, onRegister }) => 
       <div className="text-center mb-4">
         <i className="bi bi-person-plus text-success display-4"></i>
         <h2 className="fw-bold mt-2">Crea tu cuenta</h2>
-        <p className="text-muted">Únete a la comunidad Muelitas</p>
+        <p className="text-muted">Únete a la comunidad NewMe</p>
       </div>
 
       {error && <Alert variant="danger" className="py-2">{error}</Alert>}
