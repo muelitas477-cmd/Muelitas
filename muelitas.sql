@@ -57,9 +57,10 @@ ALTER TABLE challenges ENABLE ROW LEVEL SECURITY;
 ALTER TABLE games_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_challenges ENABLE ROW LEVEL SECURITY;
 
--- Políticas básicas (Permitir a usuarios ver y editar su propio perfil)
+-- Políticas básicas (Permitir a usuarios ver, editar e insertar su propio perfil)
 CREATE POLICY "Usuarios pueden ver su propio perfil" ON profiles FOR SELECT USING (auth.uid() = id);
 CREATE POLICY "Usuarios pueden actualizar su propio perfil" ON profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "Usuarios pueden insertar su propio perfil" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
 CREATE POLICY "Cualquiera puede ver los retos" ON challenges FOR SELECT USING (true);
 CREATE POLICY "Usuarios pueden ver sus propias encuestas" ON surveys FOR SELECT USING (auth.uid() = user_id);
 CREATE POLICY "Usuarios pueden insertar sus encuestas" ON surveys FOR INSERT WITH CHECK (auth.uid() = user_id);

@@ -24,13 +24,20 @@ const Login = () => {
     setError(null);
     try {
       const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+        email: email.trim(),
+        password: password,
       });
       if (error) throw error;
       navigate("/");
     } catch (err) {
-      setError(err.message === "Invalid login credentials" ? "Credenciales incorrectas" : err.message);
+      console.error("Error de login:", err);
+      if (err.message === "Invalid login credentials") {
+        setError("Correo o contraseña incorrectos");
+      } else if (err.message === "Email not confirmed") {
+        setError("Debes confirmar tu correo electrónico antes de entrar");
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -40,6 +47,9 @@ const Login = () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
+        options: {
+          redirectTo: window.location.origin
+        }
       });
       if (error) throw error;
     } catch (err) {

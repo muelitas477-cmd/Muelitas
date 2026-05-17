@@ -9,7 +9,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, error, loading, onL
         <div className="mb-3 d-inline-block p-3 rounded-circle bg-light-primary">
           <i className="bi bi-shield-plus text-primary fs-1"></i>
         </div>
-        <h2 className="fw-bold text-dark">Muelitas</h2>
+        <h2 className="fw-bold text-dark">NewMe</h2>
         <p className="text-muted small">Tu salud bucal empieza aquí</p>
       </div>
 

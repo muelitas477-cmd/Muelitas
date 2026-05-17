@@ -70,7 +70,7 @@ const Encabezado = () => {
           style={{ cursor: 'pointer' }}
         >
           <i className="bi bi-shield-plus text-primary fs-2 me-2"></i>
-          <span className="fw-bold fs-3 text-primary">Mue<span className="text-success">litas</span></span>
+          <span className="fw-bold fs-3 text-primary">New<span className="text-success">Me</span></span>
         </Navbar.Brand>
 
         {usuario ? (
