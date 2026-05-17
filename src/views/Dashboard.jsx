@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, ProgressBar, Badge, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card, ProgressBar, Badge, Button, Modal } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
 import { solicitarPermisoNotificaciones } from '../services/notificationService';
 
 const Dashboard = () => {
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mostrarModalBienvenida, setMostrarModalBienvenida] = useState(false);
 
   useEffect(() => {
-    solicitarPermisoNotificaciones(); // Solicitar permiso al entrar al dashboard
+    solicitarPermisoNotificaciones(); 
     const fetchPerfil = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -18,7 +19,15 @@ const Dashboard = () => {
           .eq('id', user.id)
           .single();
         
-        if (data) setPerfil(data);
+        if (data) {
+          setPerfil(data);
+          // Verificar si es la primera vez que entra (puntos == 100 y no hay flag en localStorage)
+          const yaMostrado = localStorage.getItem(`bienvenida_mostrada_${user.id}`);
+          if (data.puntos === 100 && !yaMostrado) {
+            setMostrarModalBienvenida(true);
+            localStorage.setItem(`bienvenida_mostrada_${user.id}`, 'true');
+          }
+        }
       }
       setLoading(false);
     };
@@ -138,6 +147,35 @@ const Dashboard = () => {
           </Card>
         </Col>
       </Row>
+
+      {/* Modal de Bienvenida */}
+      <Modal 
+        show={mostrarModalBienvenida} 
+        onHide={() => setMostrarModalBienvenida(false)}
+        centered
+        className="border-0"
+      >
+        <Modal.Body className="text-center p-5">
+          <div className="mb-4">
+            <i className="bi bi-gift-fill text-primary display-1 animate__animated animate__bounceIn"></i>
+          </div>
+          <h2 className="fw-bold text-primary mb-3">¡Bienvenido a NewMe!</h2>
+          <p className="fs-5 text-muted mb-4">
+            Estamos felices de tenerte aquí. Para empezar tu camino hacia una sonrisa saludable...
+          </p>
+          <div className="bg-light-success p-4 rounded-4 mb-4">
+            <h3 className="fw-bold text-success mb-0">✨ ¡Te regalamos 100 puntos! ✨</h3>
+            <p className="small text-success mb-0">Por unirte a nuestra comunidad</p>
+          </div>
+          <Button 
+            variant="primary" 
+            className="rounded-pill px-5 py-2 fw-bold fs-5 shadow-sm"
+            onClick={() => setMostrarModalBienvenida(false)}
+          >
+            ¡Genial, gracias!
+          </Button>
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 };
