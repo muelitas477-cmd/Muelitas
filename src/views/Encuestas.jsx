@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
+import { enviarNotificacionPuntos } from '../services/notificationService';
 
 const Encuestas = () => {
   const [paso, setPaso] = useState(1);
@@ -36,6 +37,9 @@ const Encuestas = () => {
         // Sumar puntos por completar encuesta
         const { data: perfil } = await supabase.from('profiles').select('puntos').eq('id', user.id).single();
         await supabase.from('profiles').update({ puntos: (perfil?.puntos || 0) + 100 }).eq('id', user.id);
+
+        // Notificación al teléfono
+        await enviarNotificacionPuntos(100, "Completar encuesta de hábitos");
 
         setCompletado(true);
       }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Badge, ProgressBar } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
+import { enviarNotificacionPuntos } from '../services/notificationService';
 
 const Retos = () => {
   const [retos, setRetos] = useState([]);
@@ -34,6 +35,9 @@ const Retos = () => {
       const { data: perfil } = await supabase.from('profiles').select('puntos').eq('id', user.id).single();
       await supabase.from('profiles').update({ puntos: (perfil?.puntos || 0) + puntos }).eq('id', user.id);
       
+      // Notificación al teléfono
+      await enviarNotificacionPuntos(puntos, "Completar reto de salud");
+
       alert(`¡Felicidades! Has ganado ${puntos} puntos.`);
     }
   };

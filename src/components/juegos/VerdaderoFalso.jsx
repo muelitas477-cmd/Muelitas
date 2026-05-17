@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Alert, Card, ProgressBar } from 'react-bootstrap';
 import { supabase } from '../../database/supabaseconfig';
+import { enviarNotificacionPuntos } from '../../services/notificationService';
 
 const preguntas = [
   {
@@ -64,6 +65,11 @@ const VerdaderoFalso = ({ alTerminar }) => {
       // Actualizar puntos del perfil
       const { data: perfil } = await supabase.from('profiles').select('puntos').eq('id', user.id).single();
       await supabase.from('profiles').update({ puntos: (perfil?.puntos || 0) + puntos }).eq('id', user.id);
+      
+      // Enviar notificación al sistema
+      if (puntos > 0) {
+        await enviarNotificacionPuntos(puntos, "Completar Mito o Realidad");
+      }
     }
   };
 

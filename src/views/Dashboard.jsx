@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, ProgressBar, Badge, Button } from 'react-bootstrap';
 import { supabase } from '../database/supabaseconfig';
+import { solicitarPermisoNotificaciones } from '../services/notificationService';
 
 const Dashboard = () => {
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    solicitarPermisoNotificaciones(); // Solicitar permiso al entrar al dashboard
     const fetchPerfil = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
